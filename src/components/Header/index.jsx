@@ -48,7 +48,9 @@ export default function Header() {
       localStorage.getItem("token")
       const date = parseInt(localStorage.getItem("date"))
       const now = Date.now()
-      if (now - date > 86400) {
+      // 24H
+      if (now - date > 86400000) {
+        console.log("Now:" + now + " store:" + date + " diff:" + (now - date))
         localStorage.removeItem("token")
         localStorage.removeItem("date")
         return
