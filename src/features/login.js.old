@@ -1,0 +1,113 @@
+import { createSlice } from "@reduxjs/toolkit"
+import { selectLogin } from "../utils/selectors"
+import axios from "axios"
+
+axios.defaults.baseURL = "http://localhost:3001/api/v1"
+axios.defaults.headers.common["accept"] = `application/json`
+axios.defaults.headers.common["Content-Type"] = `application/json`
+
+// Le state initial de la feature login
+const initialState = {
+  // le statut permet de suivre l'état de la requête
+  status: "void",
+  // les données lorsque la requête a fonctionné
+  data: null,
+  // l'erreur lorsque la requête échoue
+  error: null,
+  // credentials
+  credentials: null,
+}
+
+export function fetchOrUpdateLogin(credentials) {
+  return async (dispatch, getState) => {
+    const status = selectLogin(getState()).status
+    if (status === "pending" || status === "updating") {
+      // on stop la fonction pour éviter de récupérer plusieurs fois la même donnée
+      return
+    }
+    dispatch(actions.fetching())
+    try {
+      console.log(credentials)
+      // on utilise fetch pour faire la requête
+      const response = await axios.post("/user/login", credentials)
+      const data = await response.json()
+      dispatch(actions.resolved(data))
+    } catch (error) {
+      dispatch(actions.rejected(error))
+    }
+  }
+}
+
+function setVoidIfUndefined(draft, credentials) {
+  if (draft[credentials] === undefined) {
+    draft[credentials] = { status: "void" }
+  }
+}
+
+const { actions, reducer } = createSlice({
+  name: "login",
+  initialState,
+  reducers: {
+    fetching: {
+      prepare: (credentials) => ({
+        payload: { credentials },
+      }),
+      reducer: (draft, action) => {
+        setVoidIfUndefined(draft, action.payload)
+        if (draft[action.payload].status === "void") {
+          draft[action.payload].status = "pending"
+          return
+        }
+        if (draft[action.payload].status === "rejected") {
+          draft[action.payload].error = null
+          draft[action.payload].status = "pending"
+          return
+        }
+        if (draft[action.payload].status === "resolved") {
+          draft[action.payload].status = "updating"
+          return
+        }
+      },
+    },
+    resolved: {
+      // prepare permet de modifier le payload
+      prepare: (credentials, data) => ({
+        payload: { credentials, data },
+      }),
+      // la fonction de reducer
+      reducer: (draft, action) => {
+        if (
+          draft[action.payload].status === "pending" ||
+          draft[action.payload].status === "updating"
+        ) {
+          draft[action.payload].data = action.payload.data
+          draft[action.payload].status = "resolved"
+          return
+        }
+        return
+      },
+    },
+    rejected: {
+      prepare: (credentials, error) => ({
+        payload: { credentials, error },
+      }),
+      reducer: (draft, action) => {
+        setVoidIfUndefined(draft, action.payload)
+        if (
+          draft[action.payload].status === "pending" ||
+          draft[action.payload].status === "updating"
+        ) {
+          draft[action.payload].error = action.payload.error
+          draft[action.payload].data = null
+          draft[action.payload].status = "rejected"
+          return
+        }
+        return
+      },
+    },
+  },
+})
+
+export const { fetching, rejected, resolved } = actions
+
+export default reducer
