@@ -32,7 +32,7 @@ export const userSlice = createSlice({
       state.isLogged = true
       localStorage.setItem("token", action.payload.token)
       state.token = action.payload.token
-      state.email = action.payload.email
+      //state.email = action.payload.email
       localStorage.setItem("date", Date.now())
       state.date = localStorage.getItem("date")
     },

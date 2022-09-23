@@ -1,21 +1,19 @@
 import { useSelector, useDispatch } from "react-redux"
 import {
-  selectToken,
   selectIsLogged,
   selectProfile,
   saveProfile,
 } from "../../features/user/userSlice"
+import { APIUpdateProfile } from "../../features/serverRequests"
 import { useEffect, useState } from "react"
-import axios from "axios"
+
 export default function Dashboard() {
-  const token = useSelector(selectToken)
   const isLogged = useSelector(selectIsLogged)
   const profile = useSelector(selectProfile)
   const [editProfile, setEditProfile] = useState(false)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [saveProfileBDD, setSaveProfileBDD] = useState(false)
-  //const profileLoaded = useSelector(selectProfileLoaded)
+  const [isSubmit, setIsSubmit] = useState(false)
   const dispatch = useDispatch()
   const editHandler = (e) => {
     setEditProfile(true)
@@ -26,38 +24,16 @@ export default function Dashboard() {
   }
   const submitFormHandler = (e) => {
     e.preventDefault()
-    setSaveProfileBDD(true)
+    setIsSubmit(true)
     setEditProfile(false)
   }
   useEffect(() => {
-    if (saveProfileBDD) {
+    if (isSubmit) {
       dispatch(saveProfile({ firstName: firstName, lastName: lastName }))
-      setSaveProfileBDD(false)
-
-      const req = axios.create({
-        baseURL: "http://localhost:3001/api/v1/user",
-        timeout: 2000,
-      })
-      req.defaults.headers.common["accept"] = `application/json`
-      req.defaults.headers.common["Content-Type"] = `application/json`
-      req.defaults.headers.common["Authorization"] = `Bearer ${token}`
-      req
-        .put("profile", { firstName: firstName, lastName: lastName })
-        .then((res) => {})
-        .catch((err) => {
-          console.log(err)
-        })
-        .finally(() => {})
+      setIsSubmit(false)
+      dispatch(APIUpdateProfile({ firstName: firstName, lastName: lastName }))
     }
-  }, [
-    isLogged,
-    token,
-    saveProfileBDD,
-    firstName,
-    lastName,
-    editProfile,
-    dispatch,
-  ])
+  }, [isLogged, isSubmit, firstName, lastName, editProfile, dispatch])
 
   return (
     <main className='main bg-dark'>
