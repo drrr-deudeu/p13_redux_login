@@ -1,6 +1,6 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { useState } from "react"
+
 import {
   selectProfileLoaded,
   selectToken,
@@ -8,6 +8,7 @@ import {
   logout,
   selectProfile,
   relog,
+  selectDate,
 } from "../../features/user/userSlice"
 import { APIProfile } from "../../features/serverRequests"
 import { useEffect } from "react"
@@ -16,42 +17,31 @@ export default function Header() {
   const reduxProfil = useSelector(selectProfile)
   const token = useSelector(selectToken)
   const isLogged = useSelector(selectIsLogged)
-
-  const [signOut, setSignOut] = useState(false)
+  const date = useSelector(selectDate)
   const dispatch = useDispatch()
 
-  function signOutHandler(e) {
+  function logoutHandler(e) {
     e.preventDefault()
-    setSignOut(true)
-
-    localStorage.removeItem("token")
-    localStorage.removeItem("date")
+    dispatch(logout())
   }
   useEffect(() => {
-    if (signOut) {
-      dispatch(logout())
-      setSignOut(false)
-      return
-    }
-
-    if (localStorage.getItem("token")) {
-      localStorage.getItem("token")
-      const date = parseInt(localStorage.getItem("date"))
+    if (token && !isLogged) {
+      //const date = parseInt(localStorage.getItem("date"))
       const now = Date.now()
       // 24H
       // if (now - date > 86400000) {
       // 86,4 sec
       if (now - date > 86400) {
         console.log("Now:" + now + " store:" + date + " diff:" + (now - date))
-        localStorage.removeItem("token")
-        localStorage.removeItem("date")
+        dispatch(logout())
         return
       }
-      dispatch(relog({ token: localStorage.getItem("token"), date: now }))
+      dispatch(relog())
     }
+
     if (!isLogged || profileLoaded) return
     dispatch(APIProfile())
-  }, [isLogged, profileLoaded, token, dispatch, signOut])
+  }, [isLogged, profileLoaded, token, dispatch, date])
 
   return (
     <nav className='main-nav'>
@@ -69,7 +59,7 @@ export default function Header() {
             <i className='fa fa-user-circle'></i>
             {reduxProfil.firstName}
           </Link>
-          <Link className='main-nav-item' to='./' onClick={signOutHandler}>
+          <Link className='main-nav-item' to='./' onClick={logoutHandler}>
             <i className='fa fa-sign-out'></i>
             Sign Out
           </Link>
@@ -82,7 +72,6 @@ export default function Header() {
           </Link>
         </div>
       )}
-      {signOut && <Navigate to='/' replace={true} />}
     </nav>
   )
 }

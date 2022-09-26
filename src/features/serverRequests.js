@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { login, profile } from "./user/userSlice"
+import { login, profile, loginerror } from "./user/userSlice"
 import axios from "axios"
 
 axios.defaults.baseURL = "http://localhost:3001/api/v1/user"
 
-// Le state initial de la feature login
+// Le state initial de la feature API req
 const initialState = {
   // le statut permet de suivre l'état de la requête
   status: "void",
@@ -42,6 +42,7 @@ const request = async (
     dispatch(actions.resolved(data.body))
   } catch (error) {
     dispatch(actions.rejected(error.message))
+    dispatch(loginerror())
   }
 }
 

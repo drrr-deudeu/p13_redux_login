@@ -1,35 +1,43 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Navigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { selectIsLogged } from "../../features/user/userSlice"
 import { APILogin, selectStatus } from "../../features/serverRequests"
+import {
+  selectUserName,
+  saveRememberMe,
+  selectRememberMe,
+} from "../../features/user/userSlice"
 function LoginForm() {
-  const [credentials, setCredentials] = useState({ email: "", password: "" })
-  const [isSubmit, setIsSubmit] = useState(false)
-  const [logFailed, setLogFailed] = useState(false)
-  const reduxIsLogged = useSelector(selectIsLogged)
+  const userName = useSelector(selectUserName)
+  const [credentials, setCredentials] = useState({
+    email: userName ? userName : "",
+    password: "",
+    remmemberMe: false,
+  })
+
+  const savedRememberMe = useSelector(selectRememberMe)
+  const [isRememberMe, setRememberMe] = useState(savedRememberMe)
+  const isLogged = useSelector(selectIsLogged)
   const login_status = useSelector(selectStatus)
   const dispatch = useDispatch()
+
   function submitHandler(e) {
     e.preventDefault()
-    setIsSubmit(true)
+    dispatch(
+      saveRememberMe({ credentials: credentials, rememberMe: isRememberMe })
+    )
+    dispatch(APILogin(credentials))
   }
-
-  useEffect(() => {
-    if (login_status === "rejected") setLogFailed(true)
-    if (isSubmit) {
-      dispatch(APILogin(credentials))
-      setIsSubmit(false)
-    }
-  }, [credentials, isSubmit, dispatch, login_status])
+  const handleToggle = (e) => setRememberMe((prev) => !prev)
 
   return (
     <main className='main bg-dark'>
-      {reduxIsLogged && <Navigate to='/dashboard' replace={true} />}
+      {isLogged && <Navigate to='/dashboard' replace={true} />}
       <section className='sign-in-content'>
         <i className='fa fa-user-circle sign-in-icon'></i>
         <h1>Sign In</h1>
-        {logFailed && <div>Log failed</div>}
+        {login_status && <div>Log failed</div>}
         <form onSubmit={submitHandler}>
           <div className='input-wrapper'>
             <label htmlFor='username'>Username</label>
@@ -54,7 +62,12 @@ function LoginForm() {
             />
           </div>
           <div className='input-remember'>
-            <input type='checkbox' id='remember-me' />
+            <input
+              type='checkbox'
+              id='remember-me'
+              onChange={handleToggle}
+              checked={isRememberMe}
+            />
             <label htmlFor='remember-me'>Remember me</label>
           </div>
           <button type='submit' className='sign-in-button'>
