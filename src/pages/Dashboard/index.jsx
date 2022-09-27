@@ -73,11 +73,16 @@ export default function Dashboard() {
                 </form>
               </div>
             ) : (
-              <h1>
-                Welcome back
-                <br />
-                {profile.firstName}&nbsp;{profile.lastName}!
-              </h1>
+              <>
+                <h1>
+                  Welcome back
+                  <br />
+                </h1>
+                <div className='title_fields'>
+                  <div>{profile.firstName}</div>
+                  <div>{profile.lastName}!</div>
+                </div>
+              </>
             )}
             {editProfile ? (
               <button className='edit-button' onClick={submitCancelHandler}>

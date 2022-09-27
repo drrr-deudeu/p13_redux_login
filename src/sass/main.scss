@@ -306,3 +306,26 @@ html {
     align-items: center;
     justify-content: center;
   }
+
+  .title_fields{
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  @media (max-width: 720px) {
+    .input-fields{
+      flex-direction: column;
+      max-width: 90vw;
+    }
+    .input-wrapper{
+      max-width: 90vw;
+    }
+    h1 {
+      font-size: 1.5em;
+    }
+    .title_fields{
+      font-size: 1.5em;
+    }
+  }
