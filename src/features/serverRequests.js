@@ -91,6 +91,7 @@ const { actions, reducer } = createSlice({
         if (draft.status === "pending" || draft.status === "updating") {
           draft.data = action.payload
           draft.status = "resolved"
+          draft.data = null
           return
         }
         return

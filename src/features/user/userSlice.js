@@ -2,13 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 
 function initToken() {
   const token = localStorage.getItem("token")
-  //if (!token) return ""
   return token
 }
 
 function initDate() {
   const date = localStorage.getItem("date")
-  return date ? parseInt(date) : null
+  return date ? parseInt(date) : 0
 }
 
 function initUserName() {
@@ -17,9 +16,7 @@ function initUserName() {
 }
 
 function isUserName() {
-  console.log("COUCOU")
   const isUserName = localStorage.getItem("username") ? true : false
-  console.log(isUserName)
   return isUserName
 }
 
@@ -57,18 +54,20 @@ export const userSlice = createSlice({
       state.logFailed = false
       localStorage.setItem("token", action.payload.token)
       state.token = action.payload.token
-      localStorage.setItem("date", Date.now())
-      state.date = localStorage.getItem("date")
+      state.date = Date.now()
+      localStorage.setItem("date", state.date)
     },
     loginerror: (state) => {
       state.logFailed = true
     },
     relog: (state) => {
       state.isLogged = true
+      state.date = Date.now()
+      localStorage.setItem("date", state.date)
     },
     logout: (state) => {
       if (!state.rememberMe) state.email = ""
-      state.date = null
+      state.date = 0
       state.token = ""
       state.isLogged = false
       state.profile = {
@@ -123,4 +122,5 @@ export const selectHello = (state) => state.user.hello
 export const selectDate = (state) => state.user.date
 export const selectUserName = (state) => state.user.email
 export const selectRememberMe = (state) => state.user.rememberMe
+export const selectLogFailed = (state) => state.user.logFailed
 export default userSlice.reducer

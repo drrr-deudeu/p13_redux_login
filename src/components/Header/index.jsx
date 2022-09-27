@@ -26,12 +26,11 @@ export default function Header() {
   }
   useEffect(() => {
     if (token && !isLogged) {
-      //const date = parseInt(localStorage.getItem("date"))
       const now = Date.now()
       // 24H
       // if (now - date > 86400000) {
-      // 86,4 sec
-      if (now - date > 86400) {
+      // 1 mn = 60000
+      if (now - date > 60000) {
         console.log("Now:" + now + " store:" + date + " diff:" + (now - date))
         dispatch(logout())
         return

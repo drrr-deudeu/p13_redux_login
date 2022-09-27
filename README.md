@@ -1,46 +1,38 @@
-# Getting Started with Create React App and Redux
+## React - Redux Toolkit
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+[P13 Project](https://openclassrooms.com/fr/paths/516/projects/813/assignment)
 
-## Available Scripts
+This project was bootstrapped with Create React App, using the Redux and Redux Toolkit template.
 
-In the project directory, you can run:
+## Available scripts
 
-### `npm start`
+If not installed, install npm. [https://docs.npmjs.com/downloading-and-installing-node-js-and-npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Clone the project
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+> `$> git clone git@github.com:drrr-deudeu/p13_redux_login.git <project folder>`
 
-### `npm test`
+### Install the project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+enter in the project folder:
 
-### `npm run build`
+> `$> cd <project folder>`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+then install it:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> `$> npm install `
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### start the project
 
-### `npm run eject`
+( Remark : In case of backend usage, please start before the associated backend, otherwise a port conflict usage is possible )
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+> `$> npm start`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If asked, accept to start the front-end server on another IP port than 3001
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Open [http://localhost:3000](http://localhost:<port>) to view it in your browser.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Development documentation
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Entry point of documentation is /docs/index.html
+- Documentation has been generated using jsdoc

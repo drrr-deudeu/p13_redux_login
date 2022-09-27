@@ -2,11 +2,12 @@ import { useState } from "react"
 import { Navigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { selectIsLogged } from "../../features/user/userSlice"
-import { APILogin, selectStatus } from "../../features/serverRequests"
+import { APILogin } from "../../features/serverRequests"
 import {
   selectUserName,
   saveRememberMe,
   selectRememberMe,
+  selectLogFailed,
 } from "../../features/user/userSlice"
 function LoginForm() {
   const userName = useSelector(selectUserName)
@@ -19,7 +20,7 @@ function LoginForm() {
   const savedRememberMe = useSelector(selectRememberMe)
   const [isRememberMe, setRememberMe] = useState(savedRememberMe)
   const isLogged = useSelector(selectIsLogged)
-  const login_status = useSelector(selectStatus)
+  const logFailed = useSelector(selectLogFailed)
   const dispatch = useDispatch()
 
   function submitHandler(e) {
@@ -37,7 +38,7 @@ function LoginForm() {
       <section className='sign-in-content'>
         <i className='fa fa-user-circle sign-in-icon'></i>
         <h1>Sign In</h1>
-        {login_status && <div>Log failed</div>}
+        {logFailed && <div>Log failed</div>}
         <form onSubmit={submitHandler}>
           <div className='input-wrapper'>
             <label htmlFor='username'>Username</label>
