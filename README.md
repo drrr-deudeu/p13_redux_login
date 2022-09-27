@@ -32,7 +32,6 @@ If asked, accept to start the front-end server on another IP port than 3001
 
 Open [http://localhost:3000](http://localhost:<port>) to view it in your browser.
 
-## Development documentation
+You can also see the project on line
 
-- Entry point of documentation is /docs/index.html
-- Documentation has been generated using jsdoc
+Open [https://6332b3353f5fb97c1dbac0c2--harmonious-narwhal-6a1fd9.netlify.app/](https://6332b3353f5fb97c1dbac0c2--harmonious-narwhal-6a1fd9.netlify.app/)
