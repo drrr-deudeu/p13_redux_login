@@ -74,10 +74,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <>
-                <h1>
-                  Welcome back
-                  <br />
-                </h1>
+                <h1 className='dashboard_title'>Welcome back</h1>
                 <div className='title_fields'>
                   <div>{profile.firstName}</div>
                   <div>{profile.lastName}!</div>

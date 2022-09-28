@@ -307,13 +307,19 @@ html {
     justify-content: center;
   }
 
+  .dashboard_title{
+    margin-bottom: 0;
+  }
   .title_fields{
     font-size: 2em;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
+    font-weight: bold;
   }
+
   @media (max-width: 720px) {
     .input-fields{
       flex-direction: column;
