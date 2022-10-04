@@ -57,7 +57,7 @@ export const userSlice = createSlice({
       state.date = Date.now()
       localStorage.setItem("date", state.date)
     },
-    loginerror: (state) => {
+    apierror: (state) => {
       state.logFailed = true
     },
     relog: (state) => {
@@ -107,7 +107,7 @@ export const {
   profile,
   saveProfile,
   relog,
-  loginerror,
+  apierror,
   saveRememberMe,
 } = userSlice.actions
 
